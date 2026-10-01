@@ -1,0 +1,29 @@
+{
+  "purpose": "Read-only academic inputs; hashes verified before and after development",
+  "files": [
+    {
+      "path": "Analisis_multivariante/PEC/PR2/PEC_2_carlos_ramirez.Rmd",
+      "sha256": "3345695d82894e68e1e56bedc1134f3b5e337ffa0aa0a336c476115f72f844cb"
+    },
+    {
+      "path": "Analisis_multivariante/PEC/PR2/diabetes.xlsx",
+      "sha256": "97f8d9b12c858a875b44193b01f93e759d462bcf6bf3f689cb192c3e344c0ad2"
+    },
+    {
+      "path": "Analisis_multivariante/PEC/PR3/PEC3_carlos_ramirez.Rmd",
+      "sha256": "bcc9d0ecf07c8e1c42eeb361050935fc12d200c39939f5e8f028d6e5bdb2a568"
+    },
+    {
+      "path": "Analisis_multivariante/PEC/PR3/StudentPerformance.xlsx",
+      "sha256": "35e9cfa1db54dec97eebedaf7228f4fbe375d16a4894065c936c0e60ccae61bd"
+    },
+    {
+      "path": "Analisis_multivariante/PEC/PR4/PEC4_carlos_ramirez.Rmd",
+      "sha256": "454eb1c7df5482b5933ab85cc7e2b0a14ddd58b1ce72ad59cf3318cddb8a6959"
+    },
+    {
+      "path": "Analisis_multivariante/PEC/PR4/Blood_test_data.xlsx",
+      "sha256": "488cd36752c5c9abe5d2ce5e5c0621cdc0b52c867417d5c05d5ff36b369d3549"
+    }
+  ]
+}

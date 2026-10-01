@@ -1,0 +1,12 @@
+.library/
+renv/library/
+renv/staging/
+.Rhistory
+.RData
+.Rproj.user/
+data/local/
+provenance/originals/
+artifacts/
+test-results/
+*.log
+.DS_Store

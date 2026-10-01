@@ -1,0 +1,249 @@
+{
+  "executed_at": "2026-10-01",
+  "seed": 2026,
+  "protocol": "80/20 held-out test; 5-fold training validation; train-only preprocessing; OOF threshold selection",
+  "students": {
+    "Exam_Score": {
+      "source": "academic-copy",
+      "train_rows": 5286,
+      "test_rows": 1321,
+      "test_positive": {},
+      "lambda": 0.01,
+      "threshold": 0.5,
+      "cv": [
+        {
+          "lambda": 0,
+          "score": 4.96875919
+        },
+        {
+          "lambda": 0.001,
+          "score": 4.96874862
+        },
+        {
+          "lambda": 0.01,
+          "score": 4.96871402
+        },
+        {
+          "lambda": 0.1,
+          "score": 4.9738565
+        },
+        {
+          "lambda": 1,
+          "score": 5.39149021
+        },
+        {
+          "lambda": 10,
+          "score": 10.45549813
+        }
+      ],
+      "metrics": {
+        "mae": 1.09059919,
+        "rmse": 2.51900505,
+        "r2": 0.63689031
+      },
+      "baseline": {
+        "mae": 3.06100394,
+        "rmse": 4.18101567,
+        "r2": -0.00033014
+      }
+    },
+    "Mejora": {
+      "source": "academic-copy",
+      "train_rows": 5287,
+      "test_rows": 1320,
+      "test_positive": 437,
+      "lambda": 0,
+      "threshold": 0.49,
+      "cv": [
+        {
+          "lambda": 0,
+          "score": 0.08224449
+        },
+        {
+          "lambda": 0.001,
+          "score": 0.09609647
+        },
+        {
+          "lambda": 0.01,
+          "score": 0.15276403
+        },
+        {
+          "lambda": 0.1,
+          "score": 0.30131612
+        },
+        {
+          "lambda": 1,
+          "score": 0.52881134
+        },
+        {
+          "lambda": 10,
+          "score": 0.62120364
+        }
+      ],
+      "metrics": {
+        "accuracy": 0.97575758,
+        "precision": 0.9787234,
+        "recall": 0.94736842,
+        "specificity": 0.98980747,
+        "f1": 0.9627907,
+        "roc_auc": 0.98869311,
+        "average_precision": 0.98893138,
+        "brier": 0.01870319,
+        "log_loss": 0.14030834,
+        "tp": 414,
+        "fp": 9,
+        "fn": 23,
+        "tn": 874
+      },
+      "baseline": {
+        "accuracy": 0.66893939,
+        "precision": 0,
+        "recall": 0,
+        "specificity": 1,
+        "f1": 0,
+        "roc_auc": 0.5,
+        "average_precision": 0.33106061,
+        "brier": 0.2214595,
+        "log_loss": 0.63492724,
+        "tp": 0,
+        "fp": 0,
+        "fn": 437,
+        "tn": 883
+      }
+    }
+  },
+  "blood": {
+    "bgr": {
+      "source": "academic-copy",
+      "train_rows": 163,
+      "test_rows": 40,
+      "test_positive": {},
+      "lambda": 10,
+      "threshold": 0.5,
+      "cv": [
+        {
+          "lambda": 0,
+          "score": 2943.62219225
+        },
+        {
+          "lambda": 0.001,
+          "score": 2944.78056361
+        },
+        {
+          "lambda": 0.01,
+          "score": 2943.44054244
+        },
+        {
+          "lambda": 0.1,
+          "score": 2930.01482516
+        },
+        {
+          "lambda": 1,
+          "score": 2810.06916804
+        },
+        {
+          "lambda": 10,
+          "score": 2476.30065696
+        }
+      ],
+      "metrics": {
+        "mae": 33.42629622,
+        "rmse": 48.84051315,
+        "r2": 0.47819713
+      },
+      "baseline": {
+        "mae": 49.47699387,
+        "rmse": 67.62329988,
+        "r2": -0.00031952
+      }
+    },
+    "cad": {
+      "source": "academic-copy",
+      "train_rows": 163,
+      "test_rows": 40,
+      "test_positive": 3,
+      "lambda": 1,
+      "threshold": 0.13,
+      "cv": [
+        {
+          "lambda": 0,
+          "score": 2.6429305
+        },
+        {
+          "lambda": 0.001,
+          "score": 11.18802082
+        },
+        {
+          "lambda": 0.01,
+          "score": 4.50329371
+        },
+        {
+          "lambda": 0.1,
+          "score": 0.26018382
+        },
+        {
+          "lambda": 1,
+          "score": 0.22452165
+        },
+        {
+          "lambda": 10,
+          "score": 0.26484885
+        }
+      ],
+      "metrics": {
+        "accuracy": 0.825,
+        "precision": 0.3,
+        "recall": 1,
+        "specificity": 0.81081081,
+        "f1": 0.46153846,
+        "roc_auc": 0.93693694,
+        "average_precision": 0.625,
+        "brier": 0.0532158,
+        "log_loss": 0.18910027,
+        "tp": 3,
+        "fp": 7,
+        "fn": 0,
+        "tn": 30
+      },
+      "baseline": {
+        "accuracy": 0.925,
+        "precision": 0,
+        "recall": 0,
+        "specificity": 1,
+        "f1": 0,
+        "roc_auc": 0.5,
+        "average_precision": 0.075,
+        "brier": 0.06939761,
+        "log_loss": 0.26654135,
+        "tp": 0,
+        "fp": 0,
+        "fn": 3,
+        "tn": 37
+      }
+    }
+  },
+  "diabetes_exploration": {
+    "source": "academic-copy",
+    "rows": 768,
+    "complete_numeric": 394,
+    "missing_after": 650,
+    "variance": [0.28537607, 0.1869733, 0.14267767, 0.11456287, 0.09610171, 0.06789787, 0.05855972, 0.04785081],
+    "silhouette": 0.19718518
+  },
+  "students_exploration": {
+    "source": "academic-copy",
+    "rows": 6607,
+    "complete_numeric": 6607,
+    "missing_after": 235,
+    "variance": [0.17491609, 0.17108153, 0.16979533, 0.16473384, 0.16166747, 0.15780574],
+    "silhouette": 0.11867421
+  },
+  "blood_exploration": {
+    "source": "academic-copy",
+    "rows": 203,
+    "complete_numeric": 203,
+    "missing_after": 58,
+    "variance": [0.4405735, 0.11914212, 0.07579376, 0.06855508, 0.06270594, 0.05637578, 0.04070094, 0.0379868, 0.02513412, 0.02420283, 0.01669004, 0.01378853, 0.00944441, 0.00890613],
+    "silhouette": 0.35507232
+  }
+}

@@ -1,0 +1,32 @@
+:root{--ink:#080c12;--panel:#101925;--line:#27374a;--muted:#9daec0;--cyan:#40d9dd;--lime:#b8f277}
+body{background:var(--ink)!important;color:#edf2f7;font-family:Inter,system-ui,sans-serif}
+.app-shell{max-width:1600px;margin:auto;padding:30px 4% 60px}
+.app-nav{display:flex;justify-content:space-between;align-items:center;padding-bottom:26px;border-bottom:1px solid var(--line);gap:20px}
+.app-nav a{color:var(--cyan);text-decoration:none;font-size:13px}
+.signature{font-size:11px;letter-spacing:.14em;color:var(--muted)}
+.hero-copy{padding:36px 0 28px;max-width:1000px}
+.eyebrow{font-size:10px;letter-spacing:.18em;color:var(--cyan);text-transform:uppercase}
+h1{font-weight:600;letter-spacing:-.055em;font-size:clamp(40px,5vw,76px);margin:14px 0}
+.lead{font-size:15px;line-height:1.8;color:var(--muted);max-width:850px}
+.workspace{display:grid;grid-template-columns:270px minmax(0,1fr);gap:28px;align-items:start}
+.controls,.panel{border:1px solid var(--line);background:var(--panel);border-radius:12px;padding:24px}
+.controls{position:sticky;top:20px}.controls h3{font-size:17px;margin-bottom:22px}
+.controls .form-group{margin-bottom:20px}.controls label{font-size:12px;color:#c3d2e0}
+.content{min-width:0}.panel{margin:20px 0;overflow-x:auto}.panel h3{font-size:19px;letter-spacing:-.03em;margin:0 0 16px}
+.note{font-size:12px;line-height:1.8;color:var(--muted);border-left:2px solid var(--cyan);padding:8px 15px;margin:18px 0}
+.warning{border-left-color:var(--lime)}
+.stat-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:15px;margin-bottom:26px}
+.stat{padding:20px;background:var(--panel);border:1px solid var(--line);border-radius:10px}
+.stat strong{font-size:30px;font-weight:500;letter-spacing:-.04em;display:block;color:var(--cyan)}
+.stat span{font-size:10px;text-transform:uppercase;letter-spacing:.1em;color:var(--muted)}
+.nav-tabs{border-bottom:1px solid var(--line);gap:6px}.nav-tabs .nav-link{font-size:12px;color:var(--muted);border-radius:6px 6px 0 0}
+.nav-tabs .nav-link.active{background:var(--panel);color:var(--cyan);border-color:var(--line)}
+.btn-default,.btn{font-size:12px;border-radius:5px}.btn-primary{color:var(--ink);background:var(--cyan);border-color:var(--cyan)}
+.table{font-size:12px;color:#d0deeb!important;--bs-table-bg:transparent;--bs-table-color:#d0deeb;--bs-table-border-color:var(--line)}
+.shiny-output-error-validation{color:var(--lime);font-size:13px;line-height:1.8;padding:20px}
+.plot-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px}.plot-grid .panel{min-width:0}
+.form-control,.selectize-input,.selectize-dropdown{background:#0b111b!important;color:#edf2f7!important;border-color:var(--line)!important}
+.irs--shiny .irs-bar,.irs--shiny .irs-single{background:var(--cyan);border-color:var(--cyan);color:var(--ink)}
+.footer-note{font-size:11px;color:var(--muted);padding-top:28px}
+@media(max-width:850px){.workspace{grid-template-columns:1fr}.controls{position:static}.controls .form-group{max-width:100%}.plot-grid{grid-template-columns:1fr}.app-shell{padding:20px 5%}.stat strong{font-size:24px}.stat{padding:15px}.app-nav{align-items:start}.signature{max-width:160px}}
+@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important}}

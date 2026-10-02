@@ -1,12 +1,52 @@
-# Multivariate Lab
+# Del patrón al modelo
 
-**Carlos Ramírez Martín · R / Shiny / statistical modeling**
+¿Qué podemos descubrir al mirar varias variables a la vez? Esta aplicación reúne tres casos para explorar relaciones, encontrar perfiles parecidos y poner a prueba modelos de predicción.
 
-Three academic cases rebuilt as an independent interactive application. Explore data quality, PCA and clustering, then evaluate regression and classification using held-out observations. UI and explanations are available in Spanish and English.
+El proyecto parte de mis trabajos de análisis multivariante en la UOC. Reorganicé sus ideas en una aplicación con R y Shiny para pasar de la exploración visual a una evaluación del modelo, sin confundir lo que vemos en un gráfico con lo que podemos predecir en datos nuevos.
 
-## Run locally
+[Abrir la aplicación](https://multivariate-lab-production.up.railway.app) · [Ver el proyecto en mi portfolio](https://carlos-ramirez-martin.up.railway.app/es/projects/multivariate-lab/)
 
-Requires R 4.4.2 or compatible newer R. From this repository:
+## Qué puedes explorar
+
+Selecciona variables, revisa valores ausentes, observa relaciones y resume la información mediante componentes principales (PCA). K-means y clustering jerárquico ayudan a comparar observaciones con perfiles parecidos. En el gráfico de PCA puedes seleccionar puntos para examinarlos con más detalle.
+
+| Caso | Qué permite estudiar |
+| --- | --- |
+| Perfiles metabólicos | Explorar el caso de diabetes y buscar grupos. No tiene evaluación supervisada. |
+| Rendimiento académico | Explorar hábitos y resultados; predecir la nota del examen o clasificar si supera la nota anterior. |
+| Analíticas sanguíneas | Explorar perfiles, predecir glucemia o estudiar una clasificación con la etiqueta coronaria disponible. |
+
+Puedes descargar informes de exploración y evaluación en JSON. Para que el clustering jerárquico y silhouette sigan siendo manejables, utilizan una muestra reproducible de hasta 500 observaciones.
+
+La interfaz está en español e inglés. La demo se suspende cuando no se utiliza, por lo que puede tardar en arrancar.
+
+## Datos de la demo y resultados académicos
+
+El repositorio público funciona con ejemplos sintéticos de semilla fija, identificados en la interfaz. No necesitas mis archivos universitarios ni una cuenta de Kaggle. Permiten probar la aplicación, pero sus resultados no describen estudiantes ni pacientes reales.
+
+[reports/evaluation.json](reports/evaluation.json) corresponde a otra ejecución, sobre mis copias académicas locales. Su procedencia se registra mediante SHA-256 en `provenance/source-manifest.json`; los archivos de datos no se publican.
+
+En la evaluación académica de notas, el RMSE fue 2,519 frente a 4,181 de la referencia que predice la media de entrenamiento, sobre 1.321 registros de test. El caso coronario solo tiene tres positivos en el test: no permite concluir utilidad clínica. La copia de analíticas contiene 203 registros, no los 400 del dataset original de UCI. Las versiones de estudiantes tienen notas distintas y no se han unido como si fueran un único conjunto.
+
+## Cómo evalúo los modelos
+
+Reservo un 20 % para el test y uso el 80 % restante para entrenar y elegir el modelo, con cinco particiones de validación cruzada y semilla 2026. En clasificación, la separación mantiene la proporción de clases.
+
+La imputación por mediana, la codificación y el escalado se ajustan dentro de cada partición de entrenamiento. Comparo regresión convencional y logística con variantes ridge y penalizaciones `0.001, 0.01, 0.1, 1, 10`. Elijo según el error cuadrático de validación en regresión y la pérdida logarítmica en clasificación. El umbral se selecciona por F1 sobre predicciones de validación, nunca consultando el test.
+
+Comparo cada resultado con una referencia sencilla: la media de entrenamiento o la clase mayoritaria. El informe incluye MAE, RMSE y R², y en clasificación la matriz de confusión, precisión, recall, especificidad, F1, AUC, average precision, Brier y pérdida logarítmica.
+
+No retiro observaciones por sus residuos ni ajusto el preprocesamiento sobre el test. Los modelos coronarios excluyen `classification`. Para estudiar la mejora de estudiantes, supongo que `Previous_Scores` se conoce antes del examen y excluyo variables derivadas de la nota final.
+
+La exploración visual puede usar todo el caso, pero sus transformaciones no se reutilizan en la evaluación. Los intervalos de predicción son aproximados: un intervalo t en regresión sin penalización y cuantiles de residuos de validación en ridge, sin garantías independientes de la distribución.
+
+## Qué no se puede concluir
+
+Los grupos describen semejanzas, no diagnósticos. Las asociaciones no prueban causas y clasificar bien la mejora académica no demuestra que una intervención funcione: la nota anterior influye directamente en cómo se define ese objetivo. Este proyecto permite explorar métodos estadísticos; no es una herramienta médica ni un sistema para decidir sobre estudiantes.
+
+## Ejecutarlo en local
+
+El proyecto se preparó con R 4.4.2. Desde la carpeta del repositorio:
 
 ```sh
 Rscript setup.R
@@ -14,58 +54,30 @@ Rscript tests/run.R
 Rscript run.R
 ```
 
-Open http://127.0.0.1:8504/ (English: `/?lang=en`). The server binds only to loopback. It has not been deployed to Railway. To restore recorded package versions, run `renv::restore(lockfile='renv.lock', library='.library', prompt=FALSE)` after installing renv.
+Abre http://127.0.0.1:8504/; añade `/?lang=en` para entrar en inglés. El servidor solo escucha en tu equipo. Para restaurar las versiones registradas, instala `renv` y ejecuta:
 
-Without private local files, the app generates **explicitly labeled synthetic fixtures** using seed 2026. A fresh public clone therefore works without coursework files or a Kaggle account. Those fixture results are not claims about real students or patients.
-
-## Cases
-
-| Case | Exploration | Supervised tasks |
-|---|---|---|
-| Diabetes | Physiological zeros → missing; median vs complete cases; PCA; k-means; hierarchical clusters | None: exploratory segmentation only |
-| Student performance | Numeric relationships and component loadings | Exam score regression; improvement classification |
-| Blood tests | PCA, cluster profiles and diagnostic labels for visualization | Blood glucose regression; coronary-label classification |
-
-PCA plots support brushing. Download exploration and model reports as JSON. Hierarchy and silhouette use a deterministic sample of up to 500 observations. Clusters are descriptive, not clinical diagnoses.
-
-## Evaluation protocol
-
-- Seed 2026, 80% training / 20% untouched test; binary splits are stratified.
-- Five-fold validation inside training. Every fold independently fits median imputation, categorical encoding and scaling.
-- Compare conventional regression/logistic models and ridge penalties `0.001, 0.01, 0.1, 1, 10`.
-- Choose regression by validation MSE and classification by validation log loss. Select the binary threshold by out-of-fold F1, never test F1.
-- Compare against training-mean and majority-class baselines. Report MAE/RMSE/R² or confusion counts, precision, recall, specificity, F1, ROC AUC, average precision, Brier score and log loss.
-- No observation is removed because of its residual. No preprocessing is fitted on test data. Coronary models exclude the diagnostic `classification` field. Student improvement uses `Previous_Scores`, which is assumed known before the final exam; final-score-derived features are excluded.
-- Approximate prediction intervals: a t interval for unpenalized regression, or out-of-fold residual quantiles for ridge. They are not distribution-free guarantees.
-
-Exploration may use the whole case for descriptive plots; those transforms are **not reused** in supervised evaluation.
-
-## Results and limits
-
-`reports/evaluation.json` contains aggregate results executed on the author's **local academic copies**, identified by SHA-256 in `provenance/source-manifest.json`. These are not results from the synthetic defaults.
-
-The academic exam-score test has 1,321 rows: RMSE 2.519 vs 4.181 for the training-mean baseline. The coronary test has only **three positives**; its metrics are unstable and cannot establish clinical utility. Student data versions differ in their score values, so no versions are concatenated. The blood-test copy has 203 records, not the 400 in the original UCI dataset.
-
-This is a statistical portfolio project, **not a medical tool, educational decision system or causal study**. Coefficients describe associations. Prior scores strongly affect the defined improvement target; high classification performance does not demonstrate an effective intervention.
-
-## Academic provenance and immutable originals
-
-Derived from my UOC multivariate-analysis PR2, PR3 and PR4. New reusable modules replace assignment-specific code; institutional templates, prompts and teaching PDFs are not distributed. Original files are never edited, moved or rendered in place.
-
-To reproduce the published academic report with the matching original inputs:
-
-```sh
-Rscript scripts/import-academic.R /path/to/UOC
-Rscript scripts/evaluate.R
-Rscript scripts/verify-originals.R /path/to/UOC
+```r
+renv::restore(lockfile = "renv.lock", library = ".library", prompt = FALSE)
 ```
 
-The importer checks hashes before copying and refuses to overwrite changed working files. `data/local/` and `provenance/originals/` are excluded from Git. All execution, packages and outputs live here, not inside UOC.
+`R/` contiene los datos y modelos; `app.R`, la interfaz; `tests/`, las pruebas; y `scripts/`, las evaluaciones y comprobaciones de procedencia. `PORTFOLIO_URL` cambia el enlace de regreso y usa `http://localhost:4322` por defecto.
 
-The renal source is identifiable as [UCI Chronic Kidney Disease](https://archive.ics.uci.edu/dataset/336/chronic+kidney+disease), by Rubini, Soundarapandian and Eswaran (2015), CC BY 4.0. The academic subset's selection/transformation history remains unverified. Diabetes and student-copy redistribution licenses have not been established, so their raw files are not published. The MIT license applies to this project's own code, not to third-party datasets or UOC materials.
+## Procedencia y licencia
 
-## Structure
+El punto de partida fueron mis PR2, PR3 y PR4 de análisis multivariante. Los módulos se reconstruyeron para esta aplicación; no se distribuyen plantillas, enunciados ni PDF docentes. Los originales no se editan ni se mueven.
 
-`R/`: data preparation and statistical engine · `app.R`: reactive UI · `tests/`: unit tests · `scripts/`: evaluation and provenance checks · `reports/`: aggregate evidence · `renv.lock`: version lock.
+Solo si tienes acceso a los archivos académicos originales puedes reproducir ese informe:
 
-No file uploads, personal-data collection or external model API calls. To change the portfolio return link, set `PORTFOLIO_URL`; default `http://localhost:4322`.
+```sh
+Rscript scripts/import-academic.R /ruta/a/UOC
+Rscript scripts/evaluate.R
+Rscript scripts/verify-originals.R /ruta/a/UOC
+```
+
+El importador comprueba hashes antes de copiar y no sobrescribe copias modificadas. `data/local/` y `provenance/originals/` quedan fuera de Git. Paquetes y resultados se guardan aquí, nunca en la carpeta de la UOC.
+
+El origen del caso renal se identifica como [UCI Chronic Kidney Disease](https://archive.ics.uci.edu/dataset/336/chronic+kidney+disease), de Rubini, Soundarapandian y Eswaran (2015), bajo CC BY 4.0. No he podido verificar cómo se seleccionó o transformó el subconjunto académico. Tampoco está establecida la autorización para redistribuir las copias de diabetes y estudiantes, por lo que no publico sus datos.
+
+La licencia MIT se aplica al código propio, no a datasets ni materiales universitarios. La aplicación no admite subidas de archivos, no recoge datos personales y no llama a APIs externas de modelos.
+
+Carlos Ramírez Martín

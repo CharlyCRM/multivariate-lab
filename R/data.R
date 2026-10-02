@@ -9,7 +9,7 @@ case_specs <- function() list(
     numeric = c("age", "bp", "sg", "al", "su", "bgr", "bu", "sc", "sod", "pot", "hemo", "pcv", "wc", "rc"),
     label = "classification", tasks = c("bgr", "cad")))
 
-# Seeded synthetic fixtures make the public repository runnable without redistributing coursework data.
+# Los ejemplos sintéticos permiten probar la app sin publicar los datos académicos.
 synthetic_case <- function(id, n = 500, seed = 2026) {
   set.seed(seed)
   z <- rnorm(n); age <- sample(20:80, n, TRUE)
@@ -64,7 +64,7 @@ task_data <- function(case, target) {
   if (!target %in% case$spec$tasks) stop("Unsupported target.")
   binary <- target %in% c("Mejora", "cad")
   excluded <- if (case$id == "students") c("Exam_Score", "Mejora") else c("bgr", "cad", "classification")
-  # For CAD, bgr is an available measured predictor, never the diagnostic class.
+  # Para predecir cad podemos usar la glucemia medida, pero no la etiqueta diagnóstica.
   if (target == "cad") excluded <- c("cad", "classification")
   predictors <- setdiff(names(case$data), excluded)
   d <- case$data[!is.na(case$data[[target]]), c(predictors, target), drop = FALSE]

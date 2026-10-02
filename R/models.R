@@ -118,7 +118,7 @@ evaluate_task <- function(case, target, seed=2026) {
   metrics <- if(task$binary) classification_metrics(truth,predictions,threshold) else regression_metrics(truth,predictions)
   baseline_metrics <- if(task$binary) classification_metrics(truth,baseline,.5) else regression_metrics(truth,baseline)
   coefficients <- if(lambda>0) as.matrix(coef(model,s=lambda))[,1] else model$coefficients
-  # Prediction intervals are approximate; OLS uses a t interval, ridge uses OOF residual quantiles.
+  # Intervalos aproximados: t para OLS y cuantiles de residuos de validación para ridge.
   intervals <- NULL
   if(!task$binary) {
     if(lambda==0) {
@@ -150,7 +150,7 @@ explore_case <- function(case, variables=case$spec$numeric, strategy="median", c
   if(ncol(x)<2 || nrow(x)<=k || k<2) stop("Insufficient variation or observations.")
   pca <- prcomp(x,center=TRUE,scale.=TRUE)
   scaled <- scale(x); set.seed(2026); fit<-kmeans(scaled,centers=k,nstart=25,algorithm="Lloyd",iter.max=1000)
-  # A bounded deterministic sample keeps silhouette and hierarchy responsive.
+  # Limitamos la muestra para que silhouette y el clustering jerárquico sean manejables.
   sample_ids<-unique(round(seq(1,nrow(x),length.out=min(500,nrow(x)))))
   distances<-dist(scaled[sample_ids,,drop=FALSE])
   hierarchical<-hclust(distances,method="complete")
